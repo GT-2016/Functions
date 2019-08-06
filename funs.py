@@ -5,6 +5,8 @@
 """
 import json
 import pandas as pd
+import jmespath
+from jmespath import functions
 
 def compToList(list1, list2):
 	"compare two lists then put the result to another list,data in list1 but not in list2"
@@ -120,8 +122,41 @@ def creatVarName(var,value):
 	# for x in range(1,10):
 	#     globals()["string%d"%x] = "Hello"
 
-if __name__ == '__main__':
+def jmesreplace():
+	#
+	datas = {
+	    "foo": {
+	        "bar": [
+	            {"name": "one"}, 
+	            {"name": "two"}
+	        ]
+	   	}
+	}
 
+	# new_data = jmespath.replace("foo.bar[1].name","hhhhh", datas)# dont have
+	new_data = jmespath.remove("foo.bar[1]","hhhhh", datas)# dont have module 'jmespath' has no attribute 'remove'
+	print(new_data)
+
+def getJson(fname):
+	"read file string and return json "
+	temp = open(fname,"rb").read()
+	js = json.loads(temp)
+
+	return js
+
+def searchJson(condition, data):
+	"use jmespath module: 意味が少しです"
+	# condition: serarch 条件
+	# data: json 格式
+
+	result = jmespath.search(con_u,json_u_1)
+
+	return result
+
+
+
+if __name__ == '__main__':
+	jmesreplace()
 	
 	print("end~")
 
