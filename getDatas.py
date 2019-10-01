@@ -146,7 +146,7 @@ def getAccessToken():
 	body = {
 		"client_id":"8a7e12d2-dffa-4367-8d8a-00d37b7310c2",
 		"resource":"https://idm-api.cub3.nri.co.jp/",
-		"refresh_token":"AQABAAAAAAAP0wLlqdLVToOpA4kwzSnxOvZrudC01VzBQZ5MAMJoABjIF0LsdMbwwREPvS2WTIGLWsc63oCbEW0j6LFN_UeNKyTRqazB_o5T6BBUU_RR2U8cBnbPa4kxnx9C74QNwB5Xw9BOZW5R4fOE7QKHduMN6SrbN9Oe-I2yz6OWZKT10Ka-agIm5DttmaUxUA-Ah_CgzlC41cYYPCVH6MK_rkn9w2qcG14bVHEccJcdqpoxWWY6VobjJ6XfKqo8qUu31hdsxKJcc8ALMLc6q_qHp3r0N8kuE_I0d_vyqemP22r2aP4DuD9p4Ko2LiIBHYO4DkGnG-laFe4XHsKjf2uduIFOjDwGk17Xxo7r0XWlmBF9iIo0UKG6CF3EzRPTkj-o3bMBZkA1H7tPyr1RcUaBccuYdYNMgqjk9k9XVHIDvByObKuMhkzpXJxgExfZINKczEh1Q-8aC6zv85TxOxNpVt9yLXAnMvpnheAtKG2M2gnCAiTAyFuR0NBLAa12aTkv_MgYfRMgGZPelnikVm88Yfgy7twiNoYBOtu_U6kct1WFBivGPzPcTVsHc1fioMo6CVR3P6-UBbr46PdG3FpjbA0zQt8ZiI3gbb0Y9NXLF11066g1wOLX7-A9MLnFg9SSEAm3Xh5nNGUiI1C6f23AJGk3zGEnwJrUtbFJ7lfWWkruUQCeGIiOIK2xMXlbGnIh4EBCzx8kUutMSniCeCgH1sYHi2ecaiu4jK0p-GIP419SBsqFnyKs32vschfQ7RhqgAkwqk36xjYC86-S-s2D0419T2HJQ3qqdysKnYMsgawSd4cbtep9vmrCGcUA4Y6smOQwvtjjXGNkFtTkn5rAaBBhy1J3uMAlBltUQuaYJ6wsVySy_8bGArUKPExuAyO3pb000JBhcExz6ZsR1cWNv1hRcCWfnlir1vOiOLlhRS-qriAA",
+		"refresh_token":"AQABAAAAAAAP0wLlqdLVToOpA4kwzSnxL86pAZv332qnAXXjZlMyAJiuxYN4RGHDjIGATNCfKw6azbkzLzs319ziTBqGDyUyS_NFuH_2niafccRMjzLZ2Gz7atOVOHBhHYOf4nGEx3bfjor0O35pE0J4QFwOS7zlafpnjLK0pJvJCpw56cGvcR8Z8SIOsAlSty_sONCqJoSIWl_dwaI4gbxgtx8u0R4OaewlBM2AtzuAJpqDpIs4D8TBXS-ojrRxYLEdrViLr0X1pvAqMAMBWKrmWcwOzODAeyJEX0UuI4VJYdGb_tvT3PiSarwg0vjAFdmU130D0pDLnwScWy-ehRygeP0iUP6IbHkvcJ1WYZ2ncJnzjQcnehTJGtaPS_QR0fPNZBBwNBCbwV4btPdZYCrhf6NH2BW9HSATk5TDOYL16yfoxb2WLbgh67CqY5AnIoxGKLuH6b8hkFup2GN7WLQfYJqqjLq5Dp4oqAM-zBpxVy55rmyrjWwdsVhkbe1geJrR28tsJMLWoEGoOlDUM91jH44WHkuCIyE2mbBcmVUmt2nyZ_XHq93BPZMEzOK66D-PJ8IJQ-Apq0-_G_ji9PuYhxFbBGW6Br7ZQV5lLqv2YzIyeYjKSfy7KrG7mSCWIAHCqVnscdDqVflZbReRMEPd8ISh9XavbViDgMm5SS0WxBgNwr4aajbCC1dSTwjfjQ40ojISsjUZ-ZWdEURUSAukgfmV-GLGUaO2doE5bZn1tBJuHEKULraYbyN8HQw3clINVmDQGGyLPkKfJVSyBupdblV2LaRA3xq52bfbfc8eSLwZs0GHEEM7G_mwCsbxDH3bZLyV2PmKDVxYEFZ5qOK-E011U8RMsnPJBjrOwNK0wFqgDURWR_9aJaHMzm_F9ua2m_dlOrij5HG6SMWQpxWa5a9Q-mCWJ1ea1s3gpCw6nLz4I1ugdyAA",
 		"grant_type":"refresh_token"
 
 	}
@@ -157,17 +157,19 @@ def getAccessToken():
 	result = str(result, encoding = "utf-8")
 	result = json.loads(result)
 
-	# with open("1.json","w+",encoding="utf-8") as f:
-	# 	f.write(json.dumps(result,ensure_ascii=False,indent=1))
-	# print(result["access_token"])
-	return result["access_token"]
+	with open("1.json","w+",encoding="utf-8") as f:
+		f.write(result["access_token"])
+	try:
+		access = result["access_token"]
+		return access
+	except Exception as e:
+		print("error", e)
+		return ""
 
-def getDataBySql():
+def getDataBySql(token):
 	tables = ["MT_UserRsrcAcntInfo","MT_GrpAcntInfo","MT_GrpAcntSInfo","MT_AccountAttributeReflect","MT_MBXPermissionInfo"]
 
-
 	url = "https://idm-api.cub3.nri.co.jp/api/cudb/get-data-by-sql"
-	token = getAccessToken()
 
 	header = {
 		"Content-Type":"application/json",
@@ -225,6 +227,35 @@ def getDataBySql():
 				finally:
 					f.close()
 
+def getDiffData(token):
+
+	tables = ["MT_UserRsrcAcntInfo","MT_GrpAcntInfo","MT_GrpAcntSInfo","IDM_Import_MT_AccountAttributeReflect","MT_MBXPermissionInfo"]
+
+	url = "https://idm-api.cub3.nri.co.jp/api/cudb/get-diff-data"
+	
+	header = {
+		"Content-Type":"application/json",
+		"Authorization":"Bearer %s"%token
+	}
+
+	for t in tables:
+		body = {
+			 "import_table_name":"%s"%t,
+			 "import_date_time":"2019-08-01 17:36:58.657",
+			 "trunsact_no":"8639852"	# pow(2,31)-1 = 2147483647 Int32.maxint
+		}
+		response = requests.post(url = url, headers = header,data = json.dumps(body))
+		result = response.content
+		result = str(result, encoding = "utf-8")
+		result = json.loads(result)
+
+		try:
+			with open("json\\%s_diff.json"%t,"w+") as f:
+				f.write(json.dumps(result,ensure_ascii=False,indent=4))
+
+		except Exception as e:
+			print("open file failed ", e)
+		
 
 def modifyJson():
 	
@@ -245,102 +276,7 @@ def modifyJson():
 
 	for i in range(0, lens):
 		# MT_UserRsrcAcntInfo
-		copy_con["items"][i]["TrunsactNo"] = "4200000000000%d"%i
-		copy_con["items"][i]["RegistarId"] = "BATCHFAKE"
-		if copy_con["items"][i]["UserId"]:
-			copy_con["items"][i]["UserId"] = "UBFAKE000%d"%i
-
-		if copy_con["items"][i]["BeforeLog_onId"]:
-			copy_con["items"][i]["BeforeLog_onId"] = "adctrue%d"%i
-		if copy_con["items"][i]["BeforeDispName"]:
-			copy_con["items"][i]["BeforeDispName"] = "before 表示名%d"%i
-		if copy_con["items"][i]["BeforeFamilyName"]:
-			copy_con["items"][i]["BeforeFamilyName"] = "before 苗字%d"%i
-		if copy_con["items"][i]["BeforeName"]:
-			copy_con["items"][i]["BeforeName"] = "before 名前%d"%i
-		if copy_con["items"][i]["BeforeCompanyName"]:
-			copy_con["items"][i]["BeforeCompanyName"] = "before 会社の名前%d"%i
-		if copy_con["items"][i]["BeforeMainDptName"]:
-			copy_con["items"][i]["BeforeMainDptName"] = "before 部門の名前%d"%i
-		if copy_con["items"][i]["BeforeKanaName"]:
-			copy_con["items"][i]["BeforeKanaName"] = "ソフトウェアエンジニア%d"%i
-		if copy_con["items"][i]["BeforeAlphabetName"]:
-			copy_con["items"][i]["BeforeAlphabetName"] = "SOFUTOWUE ENJINIA%d"%i
-		if copy_con["items"][i]["BeforeMailAddress"]:
-			copy_con["items"][i]["BeforeMailAddress"] = "true.mailaddress_%d@test.com.cn"%i
-		if copy_con["items"][i]["BeforeStructureCode"]:
-			copy_con["items"][i]["BeforeStructureCode"] = "A_fake_%d"%i
-
-		if copy_con["items"][i]["AfterLog_onId"]:
-			copy_con["items"][i]["AfterLog_onId"] = "adcfake%d"%i
-		if copy_con["items"][i]["AfterMailAddress"]:
-			copy_con["items"][i]["AfterMailAddress"] = "fake.mailaddress_%d@test.com.cn"%i
-		if copy_con["items"][i]["AfterStructureCode"]:
-			copy_con["items"][i]["AfterStructureCode"] = "AA_fake_%d"%i
-		if copy_con["items"][i]["AfterDispName"]:
-			copy_con["items"][i]["AfterDispName"] = "After 表示名%d"%i
-		if copy_con["items"][i]["AfterFamilyName"]:
-			copy_con["items"][i]["AfterFamilyName"] = "After 苗字%d"%i
-		if copy_con["items"][i]["AfterName"]:
-			copy_con["items"][i]["AfterName"] = "After 名前%d"%i
-		if copy_con["items"][i]["AfterCompanyName"]:
-			copy_con["items"][i]["AfterCompanyName"] = "After 会社の名前%d"%i
-		if copy_con["items"][i]["AfterMainDptName"]:
-			copy_con["items"][i]["AfterMainDptName"] = "After 部門の名前%d"%i
-		if copy_con["items"][i]["AfterKanaName"]:
-			copy_con["items"][i]["AfterKanaName"] = "後ソフトウェアエンジニア%d"%i
-		if copy_con["items"][i]["AfterAlphabetName"]:
-			copy_con["items"][i]["AfterAlphabetName"] = "GO SOFUTOWUE ENJINIA%d"%i 
-		if copy_con["items"][i]["AfterWorkplaceName"]:
-			copy_con["items"][i]["AfterWorkplaceName"] = "GO 東京都_%d"%i
-
-		# copy_con["items"][i]["BeforeSecGrpCode"] = "NB_00%d"%i
-		# # copy_con["items"][i]["AfterSecGrpCode"] = "N_00%d"%i
-		# copy_con["items"][i]["BeforeSecGrpName"] = "TRUE_NAME"
-		# # copy_con["items"][i]["AfterSecGrpName"] = "FAKE_NAME"
-		# copy_con["items"][i]["BeforeSecGrpExpln"] = "TRUE_開発部門"
-		# # copy_con["items"][i]["AfterSecGrpExpln"] = "FAKE_開発部門"
-		# copy_con["items"][i]["BeforeMailAddress"] = "true.mail_%d@test.com.cn"%i
-		# # copy_con["items"][i]["AfterMailAddress"] = "fake.mail_%d@test.com.cn"%i
-
-		# MT_GrpAcntInfo
-		# copy_con["items"][i]["TrunsactNo"] = "3200000000000%d"%i
-		# copy_con["items"][i]["RegistarId"] = "BATCHFAKE"
-		# copy_con["items"][i]["OrganizCode"] = "SLFAKE000%d"%i
-		# copy_con["items"][i]["BeforeSecGrpCode"] = "NB_00%d"%i
-		# # copy_con["items"][i]["AfterSecGrpCode"] = "N_00%d"%i
-		# copy_con["items"][i]["BeforeSecGrpName"] = "TRUE_NAME"
-		# # copy_con["items"][i]["AfterSecGrpName"] = "FAKE_NAME"
-		# copy_con["items"][i]["BeforeSecGrpExpln"] = "TRUE_開発部門"
-		# # copy_con["items"][i]["AfterSecGrpExpln"] = "FAKE_開発部門"
-		# copy_con["items"][i]["BeforeMailAddress"] = "true.mail_%d@test.com.cn"%i
-		# # copy_con["items"][i]["AfterMailAddress"] = "fake.mail_%d@test.com.cn"%i
-
-
-		# MT_MBXPermissionInfo
-		# copy_con["items"][i]["TrunsactNo"] = "1000000000000%d"%i
-		# copy_con["items"][i]["RegistarId"] = "MBEXFAKE"
-		# copy_con["items"][i]["UserId_RsrcCd"] = "UBFAKE000%d"%i
-		# copy_con["items"][i]["Log_onId"] = "adcfake%d"%i
-		# copy_con["items"][i]["MBXUserId_RsrcCd_OrgCd"] = "SBFAKE000%d"%i
-		# copy_con["items"][i]["MBXLogonId_SecGrpCd"] = "A_fake_%d"%i
-
-		# MT_AccountAttributeReflect
-		# copy_con["items"][i]["RecordNo"] = "10000%d"%i
-		# copy_con["items"][i]["Log_onId"] = "fake.burns-eu"
-		# copy_con["items"][i]["ApplicationStartDay"] = "20190927"
-		# copy_con["items"][i]["Value"] = "fake.email%d@test.com"%i
-
-		# MT_GrpAcntSInfo
-		# copy_con["items"][i]["TrunsactNo"] = "2100000000000%d"%i
-		# copy_con["items"][i]["RegistarId"] = "MBEXFAKE"
-		# copy_con["items"][i]["OrganizCode"] = "SBFAKE000%d"%i
-		# copy_con["items"][i]["SecGrpCode"] = "G_00%d"%i
-		# copy_con["items"][i]["AflUserId_RsrcCd_OrgCd"] = "UFFAKE"
-		# copy_con["items"][i]["AflLogonId_SecGrpCd"] = "fake-log"
-		#変更
-		
-
+		pass
 
 	f = open(file,"w+",encoding="utf-8")
 	f.write(json.dumps(copy_con,ensure_ascii=False,indent=1))
@@ -423,6 +359,13 @@ def modify_MT_UserRsrcAcntInfo(patho, paths):
 					copy_con["items"][i]["AfterAlphabetName"] = "GO SOFUTOWUE ENJINIA%d"%i 
 				if copy_con["items"][i]["AfterWorkplaceName"]:
 					copy_con["items"][i]["AfterWorkplaceName"] = "GO 東京都_%d"%i
+
+				copy_con["items"][i]["LogOnIdChangeSector"] = copy_con["items"][i].pop("Log_onIdChangeSector")
+				copy_con["items"][i]["BeforeLogOnId"] = copy_con["items"][i].pop("BeforeLog_onId")
+				copy_con["items"][i]["AfterLogOnId"] = copy_con["items"][i].pop("AfterLog_onId")
+				copy_con["items"][i]["HITOIDChangeSector"] = copy_con["items"][i].pop("HITO_ID_ChangeSector")
+				copy_con["items"][i]["BeforeHITOID"] = copy_con["items"][i].pop("BeforeHITO_ID")
+				copy_con["items"][i]["AfterHITOID"] = copy_con["items"][i].pop("AfterHITO_ID")
 
 			path_s = os.path.join(paths, "MT_UserRsrcAcntInfo_%s_10_m.json"%jk)
 
@@ -523,6 +466,9 @@ def modify_MT_GrpAcntSInfo(patho, paths):
 				copy_con["items"][i]["SecGrpCode"] = "NA_00%d"%i
 				copy_con["items"][i]["AflUserId_RsrcCd_OrgCd"] = "UF0000"
 				copy_con["items"][i]["AflLogonId_SecGrpCd"] = "fake-log"
+
+				copy_con["items"][i]["AflUserIdRsrcCdOrgCd"] = copy_con["items"][i].pop("AflUserId_RsrcCd_OrgCd")
+				copy_con["items"][i]["AflLogonIdSecGrpCd"] = copy_con["items"][i].pop("AflLogonId_SecGrpCd")
 				
 			path_s = os.path.join(paths, "MT_GrpAcntSInfo_%s_10_m.json"%jk)
 			
@@ -568,7 +514,9 @@ def modify_MT_AccountAttributeReflect(patho, paths):
 			else:
 				# personid
 				copy_con["items"][i]["Value"] = "fake.personid.%d"%i
-			
+
+			copy_con["items"][i]["LogOnId"] = copy_con["items"][i].pop("Log_onId")
+
 		path_s = os.path.join(paths, "MT_AccountAttributeReflect_10_m.json")
 		
 		with open(path_s,"w+",encoding="utf-8") as f:
@@ -609,6 +557,8 @@ def modify_MT_MBXPermissionInfo(patho, paths):
 				copy_con["items"][i]["MBXUserId_RsrcCd_OrgCd"] = "SB0000000%d"%i
 				copy_con["items"][i]["MBXLogonId_SecGrpCd"] = "A_fake_%d"%i
 
+				copy_con["items"][i]["LogOnId"] = copy_con["items"][i].pop("Log_onId")
+
 			path_s = os.path.join(paths, "MT_MBXPermissionInfo_%s_10_m.json"%jk)
 			
 			with open(path_s,"w+",encoding="utf-8") as f:
@@ -617,41 +567,43 @@ def modify_MT_MBXPermissionInfo(patho, paths):
 		except Exception as e:
 			print("MT_MBXPermissionInfo: File or path not exist")
 			continue
-	
 
 
 def getCurDate():
-	# from datetime import datetime
-	from time import gmtime, strftime
-	# nowtime = datetime.now()
+	"2019-10-01 10:13:14"
+	from datetime import datetime
+	# from time import gmtime, strftime
+	nowtime = datetime.now()
 
-	newtime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+	# newtime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+	# newtime = nowtime.strftime('%Y-%m-%d %H:%M:%S.%f%z')
+	newtime = nowtime.strftime('%Y-%m-%d %H:%M:%S')
 	return newtime
 
 if __name__ == '__main__':
-	print("========================")
+	print("--------------------------------------------")
 	
 	# time = "ddd"
 	# url1 = "https://www.jitec.ipa.go.jp/1_04hanni_sukiru/mondai_kaitou_%s_1/"%time
-	
-	# # getAccessToken()
+	Token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyIsImtpZCI6ImFQY3R3X29kdlJPb0VOZzNWb09sSWgydGlFcyJ9.eyJhdWQiOiJodHRwczovL2lkbS1hcGkuY3ViMy5ucmkuY28uanAvIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNmM5MzE0MTItNzZiMi00ZGRjLWI0NTItZGVmNjgxNWFkNmFiLyIsImlhdCI6MTU2OTkwNDI4NSwibmJmIjoxNTY5OTA0Mjg1LCJleHAiOjE1Njk5MDgxODUsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84TUFBQUFxZkFOYnZzamVJK3hoQnpTcVFXVEFVNVZHNVVzcGgvcVRhQ0N3WlA5RkErbEY1WCtuenNwWFJVTG95SzdPejF5d0JKTzltM3ArT1JtOUt5dU1URVR6eVRLVFFyekNyUkhJcklhWkZFV0FQTT0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiOGE3ZTEyZDItZGZmYS00MzY3LThkOGEtMDBkMzdiNzMxMGMyIiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMzYuMy44NC4xMjYiLCJuYW1lIjoi6LaZ44CA5p2wKGR3cCkiLCJvaWQiOiIxMDcyOGEwOS1iYTY3LTRjYWUtYjAyYi04MmM4OTgyNGM3MTciLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjc3Mjg3MjE3Ni0yNDYzNTMxODI0LTM1NTY0OTIzMjQtMTA5NjEyIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiM0ZmSnU5blpQMll3bnF2a0VySVJ4WDVxMUowT0Zyam9KbC10YzZBcnpDZyIsInRpZCI6IjZjOTMxNDEyLTc2YjItNGRkYy1iNDUyLWRlZjY4MTVhZDZhYiIsInVuaXF1ZV9uYW1lIjoidG9uMDAwMDctZHdwQGN1YjMubnJpLmNvLmpwIiwidXBuIjoidG9uMDAwMDctZHdwQGN1YjMubnJpLmNvLmpwIiwidXRpIjoiam9xVG5Sc3d0MFctY3VKS3R1NFNBQSIsInZlciI6IjEuMCJ9.Gsg99IWSr1QKsEqMfFvXwANvnhEXrI0pIQCjiJw9mWwEMwDNcTzjC8nKjCHmkRw6rMTfjQNC3EHcFUOYHfX4oYG_u8SIJxtrdO4H5my2vrETUpK0jAV-0TAMOfmksskeUWzEb6x8MnYPTQlUaNIs2k_Bi18QBYrK-QVIIR1U0xCThlR5IRqJvTcz2EbokGvkJ9RNLrskGLhIYegpj7GmVW0yYbNorGJ8ESuRDHPca_XNHVd4Jly-OVaAyS1iah-rFj-s85INaMPaleYucN2LDbdzojYkKM_9aLW5gYfr4_7Op9JW2sc3vU7Q2PoeMe9Mg8PsZsdnPBJzmzQnxjT0ew"
+	token = Token if "Token" in globals() else getAccessToken()
 
-
-	# getCurDate()
+	getDiffData(token)
+	# print(getCurDate())
 	# --------------------------------------------------------------------------------------------
 	#	read file and modify sensitive message,then save
 	#
-	PATHO = "C:\\Users\\liaga\\株式会社トップワンテック\\IDM - 04.テスト\\PH2.テストケース\\データ準備\\Original"
-	PATHS = "C:\\Users\\liaga\\株式会社トップワンテック\\IDM - 04.テスト\\PH2.テストケース\\データ準備\\Modify"
-	patho = PATHO if "PATHO" in globals() else os.path.abspath(os.path.dirname(__file__))
-	paths = PATHS if "PATHS" in globals() else os.path.abspath(os.path.dirname(__file__))
-	modify_MT_UserRsrcAcntInfo(patho, paths)
-	modify_MT_GrpAcntInfo(patho, paths)
-	modify_MT_GrpAcntSInfo(patho, paths)
-	modify_MT_AccountAttributeReflect(patho, paths)
-	modify_MT_MBXPermissionInfo(patho, paths)
+	# PATHO = "C:\\Users\\liaga\\株式会社トップワンテック\\IDM - 04.テスト\\PH2.テストケース\\データ準備\\Original"
+	# PATHS = "C:\\Users\\liaga\\株式会社トップワンテック\\IDM - 04.テスト\\PH2.テストケース\\データ準備\\Modify"
+	# patho = PATHO if "PATHO" in globals() else os.path.abspath(os.path.dirname(__file__))
+	# paths = PATHS if "PATHS" in globals() else os.path.abspath(os.path.dirname(__file__))
+	# modify_MT_UserRsrcAcntInfo(patho, paths)
+	# modify_MT_GrpAcntInfo(patho, paths)
+	# modify_MT_GrpAcntSInfo(patho, paths)
+	# modify_MT_AccountAttributeReflect(patho, paths)
+	# modify_MT_MBXPermissionInfo(patho, paths)
 	# --------------------------------------------------------------------------------------------
-	
+
 	# print(patho, paths)
 
 	print("----end----")
