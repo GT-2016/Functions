@@ -7,6 +7,8 @@ import json
 import pandas as pd
 import jmespath
 from jmespath import functions
+import requests
+import sys
 
 def compToList(list1, list2):
 	"compare two lists then put the result to another list,data in list1 but not in list2"
@@ -37,6 +39,13 @@ def saveToJsonOrtxt(fn, datas):
 
 	f = open(fn,"w+",encoding="utf-8")
 	f.write(json.dumps(datas,ensure_ascii=False,indent=1))
+	f.close()
+
+def saveToOrig(fn, datas):
+	"save to original file by bytes"
+
+	f = open(fn,"wb")
+	f.write(datas)
 	f.close()
 
 def isPathExist(path):
@@ -153,11 +162,90 @@ def searchJson(condition, data):
 
 	return result
 
+def getUrl():
+	url = "https://idm-api.cub3.nri.co.jp/api/cudb/get-diff-data"
 
+	header = {"Content-Type":"application/json","Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6InU0T2ZORlBId0VCb3NIanRyYXVPYlY4NExuWSIsImtpZCI6InU0T2ZORlBId0VCb3NIanRyYXVPYlY4NExuWSJ9.eyJhdWQiOiJodHRwczovL2lkbS1hcGkuY3ViMy5ucmkuY28uanAvIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvNmM5MzE0MTItNzZiMi00ZGRjLWI0NTItZGVmNjgxNWFkNmFiLyIsImlhdCI6MTU2NTIzNjk4NywibmJmIjoxNTY1MjM2OTg3LCJleHAiOjE1NjUyNDA4ODcsImFjciI6IjEiLCJhaW8iOiJBVlFBcS84TUFBQUFWcHJSL2tPbjF3QnBpbXQyMXdHSkd2dWxJU2xKQkxCblE0YUg4dGRZNVNEMzdSaTBydG1JblBORjBtb1hJLy93K3poK0JqSEFwUWdDS1JyV3B3ZDZXWUZVSWY2bVFucVI4RnU0ckpuQjlvOD0iLCJhbXIiOlsicHdkIiwibWZhIl0sImFwcGlkIjoiOGE3ZTEyZDItZGZmYS00MzY3LThkOGEtMDBkMzdiNzMxMGMyIiwiYXBwaWRhY3IiOiIwIiwiaXBhZGRyIjoiMzYuMy44NC4xMjYiLCJuYW1lIjoi5p2O44CA6LuNKGR3cCkiLCJvaWQiOiJlMDY5MjY4OS1kN2Y4LTRlYjgtYTViZi1jZjE3NGE2YTA5OTciLCJvbnByZW1fc2lkIjoiUy0xLTUtMjEtMjc3Mjg3MjE3Ni0yNDYzNTMxODI0LTM1NTY0OTIzMjQtMTA5NjEwIiwic2NwIjoidXNlcl9pbXBlcnNvbmF0aW9uIiwic3ViIjoiVEJ1ZDJRQkF0STNWZnBaNmNHMmkyQW9nZnJ4MTRPVnVscGxDSnpRSGlfRSIsInRpZCI6IjZjOTMxNDEyLTc2YjItNGRkYy1iNDUyLWRlZjY4MTVhZDZhYiIsInVuaXF1ZV9uYW1lIjoidG9uMDAwMDUtZHdwQGN1YjMubnJpLmNvLmpwIiwidXBuIjoidG9uMDAwMDUtZHdwQGN1YjMubnJpLmNvLmpwIiwidXRpIjoiZERSMFpnLTMxRXVhOWVTMzY2Z2JBUSIsInZlciI6IjEuMCJ9.AV2OOgXjHqzpQQrNxZSoDTmhkGKEL0rupeVfYncwTBz2z_Re7qu5SRyHrWeXe8yFk4GKtnplIhqWDjiBNvnnzljW9-ThNY-R71lSF_vGGqPCgtqvbu-SQc_G-X0wmV9a_gHIWt9rh4cjQtZwSYkmo2C5FJogi2_WL7WnlcGGNWno-uQraToNKLjDTWetnSQcGVMlDOlF8trRyafOn8XxIn1wFTzVwFxjM8-Ix3aUOx-TFHI1OO3wih9PSsX8_YpvhTiIbeD5-12iRVfbv4m5I6OaPqZMSl17WHtGvUGMOK_QRaLSFcGvMm6HPaP090iRJnViBMU7x44Gf5vFDCgSBw"}
+	body = {
+		"import_table_name": "MT_UserRsrcAcntInfo",
+		"import_date_time": "2019-07-01 17:26:26.310",
+		"trunsact_no": "20190610900004"
+	}
+
+	response = requests.post(url = url, headers = header,data = json.dumps(body))
+	# if Content-Type:application/x-www-form-urlencoded, data = parse.urlencode(body)
+	result = response.content
+	# print(result)
+	print(type(result))		# <class 'bytes'>
+	# result_json = result.decode('utf-8')
+	# print(len(result_json))
+	# print(result_json)
+
+	# return result_json
+	#------------------------------
+	# test:html无转义
+	#-------------------------------
+	f = open("1.json","wb")
+	f.write(result)
+	f.close()
+
+	
+
+	#------------------------------
+	# 保存成json格式
+	#-------------------------------
+	# f = open("test.json","w",encoding="utf-8")
+	# f.write(json.dumps(result_json,ensure_ascii=False,indent=1))
+	# f.close()
+
+	# data = eval(response.decode())
+ 
+	# data = json.dumps(data,indent=4,separators=(',', ': '),ensure_ascii=False)
+	# print(data)
+
+def modifyJsonKey():
+
+	temp = {
+		"name":"July",
+		"age": 24,
+		"enjoy": "creative"
+	}
+
+	temp["element"] = temp.pop("name")
+	print(json.dumps(temp))
+
+def getFilesName():
+	import os
+	dir_new = os.getcwd()
+	dir_new = "C:\\liaga\\その他\\Network\\書作\\世界经典名著电子书\\一生必读的60部名著"
+	filess = []
+	for curdir,dirs,files in os.walk(dir_new):
+		# print(dirs)
+		filess.append(files)
+		break
+	
+	# print(len(files))
+	# filesss = filter(lambda x:x != "[]", filess)
+	# print(filess)
+	
+	with open("fileName.txt","a+",encoding="utf-8") as f:
+		for i in range(0,len(filess[0])):
+			try:
+				f.write(filess[0][i]+"\n")
+			except Exception as e:
+				print("write failed, ",e)
+				break
+
+	# print(dir)
 
 if __name__ == '__main__':
-	jmesreplace()
-	
+	print("starting ")
+	# data = getUrl()
+	# modifyJsonKey()
+	# getItem()
+	# print([x for x in range(0,2)])
+	# print(pow(2,31)-1)
+	getFilesName()
 	print("end~")
 
 	
