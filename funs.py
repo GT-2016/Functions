@@ -237,6 +237,25 @@ def getFilesName():
 				break
 
 	# print(dir)
+def batchDeal():
+	curDir = os.getcwd()
+
+	for curdir,dirs,files in os.walk(curDir):
+		# print(curdir)
+		for file in files:
+			print(file)
+			newPath = os.path.join(curdir, file)
+
+			if file != "1.py":
+				with open(newPath,encoding="utf-8") as f:
+					content = f.read()
+				# print(content)
+				con = json.loads(content)
+				con["parameters"]["batchName"] = "Daytime"
+
+				with open(newPath, "w+",encoding="utf-8") as f:
+					f.write(json.dumps(con,ensure_ascii=False,indent=2))
+				# break
 
 if __name__ == '__main__':
 	print("starting ")
